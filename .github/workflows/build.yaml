@@ -42,6 +42,6 @@ jobs:
         with:
           name: release ${{ matrix.os }}
           path: |
-            target/release/arpchat*
-            !target/release/arpchat.d
+            target/release/qqchat*
+            !target/release/qqchat.d
           retention-days: 1
