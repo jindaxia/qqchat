@@ -31,8 +31,8 @@ impl Config {
     }
 
     pub fn get_config_path() -> Option<PathBuf> {
-        let dirs = ProjectDirs::from("dev", "kognise", "arpchat")?;
-        Some(dirs.config_dir().join("arpchat.toml"))
+        let dirs = ProjectDirs::from("dev", "kognise", "qqchat")?;
+        Some(dirs.config_dir().join("qqchat.toml"))
     }
 }
 

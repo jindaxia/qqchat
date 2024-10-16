@@ -1,6 +1,6 @@
 [package]
 edition = "2021"
-name = "arpchat"
+name = "qqchat"
 version = "1.0.0"
 
 [dependencies]
@@ -8,7 +8,7 @@ crossbeam-channel = "0.5.4"
 cursive = { version = "0.17.0", default_features = false, features = ["toml", "crossterm-backend"] }
 directories = "4.0.1"
 gethostname = "0.2.3"
-pnet = "0.29.0"
+pnet = "0.34.0"
 rand = "0.8.5"
 smaz = "0.1.0"
 toml = "0.5.8"

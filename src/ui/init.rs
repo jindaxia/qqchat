@@ -36,7 +36,7 @@ pub fn init_app(siv: &mut Cursive, ui_tx: Sender<UICommand>) {
                                 .scrollable()
                                 .scroll_strategy(ScrollStrategy::StickToBottom),
                         )
-                        .title("arpchat")
+                        .title("qqchat")
                         .with_name("chat_panel")
                         .full_height()
                         .full_width(),

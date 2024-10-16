@@ -39,9 +39,9 @@ type ChatPanel = Panel<ScrollView<ResizedView<ResizedView<NamedView<LinearLayout
 
 pub fn update_title(siv: &mut Cursive, username: &str, interface: &str) {
     let title = if interface.len() <= 8 {
-        format!("arpchat: {username} ({interface})")
+        format!("qqchat: {username} ({interface})")
     } else {
-        format!("arpchat: {username}")
+        format!("qqchat: {username}")
     };
     siv.set_window_title(&title);
     siv.call_on_name("chat_panel", |chat_panel: &mut ChatPanel| {

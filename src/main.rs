@@ -1,3 +1,3 @@
 fn main() {
-    arpchat::ui::run();
+    qqchat::ui::run();
 }
