@@ -19,7 +19,7 @@ use crate::ringbuffer::Ringbuffer;
 const ARP_HTYPE: &[u8] = &[0x00, 0x01]; // Hardware Type (Ethernet)
 const ARP_HLEN: u8 = 6; // Hardware Address Length
 const ARP_OPER: &[u8] = &[0, 1]; // Operation (Request)
-const PACKET_PREFIX: &[u8] = b"uwu";
+const PACKET_PREFIX: &[u8] = b"qqa";
 
 pub const ID_SIZE: usize = 8;
 pub type Id = [u8; ID_SIZE];
