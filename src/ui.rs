@@ -13,14 +13,13 @@ mod dialog {
 }
 
 use std::thread;
-use std::fs::File;
+use std::fs::OpenOptions;
+use std::io::Write;
 
 use chrono::Timelike;
 use crossbeam_channel::unbounded;
 use cursive::backends::crossterm::crossterm::style::Stylize;
 use cursive::views::{Dialog, LinearLayout, NamedView, TextView};
-use log::{info};
-use simplelog::{WriteLogger, Config, LevelFilter};
 
 use self::config::CONFIG;
 use self::dialog::interface::show_iface_dialog;
@@ -31,8 +30,11 @@ use self::util::{
 
 pub fn run() {
     let (mut username, mut interface) = ("anonymous".to_string(), "".to_string());
-
-    WriteLogger::init(LevelFilter::Info, Config::default(), File::create("qqchat.log").unwrap()).unwrap();
+    let mut f = OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open("qqchat.log")
+        .unwrap();
 
     let (ui_tx, ui_rx) = unbounded::<UICommand>();
     let (net_tx, net_rx) = unbounded::<NetCommand>();
@@ -54,22 +56,21 @@ pub fn run() {
                 UICommand::AlertUser => ring_bell(),
                 UICommand::NewMessage(id, username, msg, is_eager) => {
                     let now = chrono::offset::Local::now();
-
+                    let time = format!(
+                        "{hours:02}:{mins:02}:{secs:02}",
+                        hours = now.hour(),
+                        mins = now.minute(),
+                        secs = now.second()
+                    );
                     let mut print = format!(
                         "{time} [{username}] {msg}",
-                        time = format!(
-                            "{hours:02}:{mins:02}:{secs:02}",
-                            hours = now.hour(),
-                            mins = now.minute(),
-                            secs = now.second()
-                        )
-                        .dark_grey(),
+                        time = time.clone().dark_grey(),
                         username = username.clone().with(color_from_id(&id)),
                     );
                     if is_eager {
                         print += &" sending...".dark_grey().to_string();
                     }else{
-                        info!("[{username}] {msg}");
+                        writeln!(&mut f, "{time} [{username}] {msg}").unwrap();
                     }
                     update_or_append_txt(&mut siv, "chat_inner", &msg, print);
                     if !is_eager {
