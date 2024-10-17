@@ -13,11 +13,14 @@ mod dialog {
 }
 
 use std::thread;
+use std::fs::File;
 
 use chrono::Timelike;
 use crossbeam_channel::unbounded;
 use cursive::backends::crossterm::crossterm::style::Stylize;
 use cursive::views::{Dialog, LinearLayout, NamedView, TextView};
+use log::{info};
+use simplelog::{WriteLogger, Config, LevelFilter};
 
 use self::config::CONFIG;
 use self::dialog::interface::show_iface_dialog;
@@ -28,6 +31,8 @@ use self::util::{
 
 pub fn run() {
     let (mut username, mut interface) = ("anonymous".to_string(), "".to_string());
+
+    WriteLogger::init(LevelFilter::Info, Config::default(), File::create("qqchat.log").unwrap()).unwrap();
 
     let (ui_tx, ui_rx) = unbounded::<UICommand>();
     let (net_tx, net_rx) = unbounded::<NetCommand>();
@@ -59,12 +64,13 @@ pub fn run() {
                             secs = now.second()
                         )
                         .dark_grey(),
-                        username = username.with(color_from_id(&id)),
+                        username = username.clone().with(color_from_id(&id)),
                     );
                     if is_eager {
                         print += &" sending...".dark_grey().to_string();
+                    }else{
+                        info!("[{username}] {msg}");
                     }
-
                     update_or_append_txt(&mut siv, "chat_inner", &msg, print);
                     if !is_eager {
                         siv.call_on_name(&msg, |child: &mut NamedView<TextView>| {
